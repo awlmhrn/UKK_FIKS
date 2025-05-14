@@ -1,0 +1,144 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Models\Siswa;
+use App\Models\Industri;
+use App\Models\Guru;
+
+use App\Filament\Resources\PklResource\Pages;
+use App\Filament\Resources\PklResource\RelationManagers;
+use App\Models\Pkl;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+
+class PklResource extends Resource
+{
+    protected static ?string $model = Pkl::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Grid::make(2) // form dibagi jadi 2 kolom per baris
+    ->schema([
+        // siswa_id
+        Forms\Components\Select::make('siswa_id') // menghasilkan dropdown untuk memilih data berdasarkan FK siswa_id
+            ->label('Nama Siswa')
+            ->relationship('siswa', 'nama') // menampilkan field nama dari tabel siswa
+            ->native(false) // menonaktifkan tampilan dropdown bawaan browser
+            ->columnSpan(2)
+            ->unique(table: 'pkls', column: 'siswa_id', ignoreRecord:true)
+            ->validationMessages([
+                'unique' => 'Siswa ini sudah memiliki data PKL.',
+            ])
+            ->required(),
+
+        // industri_id
+        Forms\Components\Select::make('industri_id')
+            ->label('Nama Industri')
+            ->relationship('industri', 'nama')
+            ->native(false)
+            ->required(),
+
+        // guru_id
+        Forms\Components\Select::make('guru_id')
+            ->label('Nama Guru Pendamping')
+            ->relationship('guru', 'nama')
+            ->native(false)
+            ->required(),
+
+        // mulai
+        Forms\Components\DatePicker::make('mulai') // membuat input tanggal dengan date picker
+            ->label('Tanggal Mulai')
+            ->required(),
+
+        // selesai
+        Forms\Components\DatePicker::make('selesai')
+            ->label('Tanggal Selesai')
+            ->after('mulai') // memastikan tanggal selesai tidak lebih awal dari mulai
+            ->required(),
+        ])
+
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+               // id menjadi nomor urut berdasarkan id terkecil hingga terbesar
+               // ini sekadar di table filamentnya, pada database tetap sesuai dengan id yang tersimpan dan terhapus
+               Tables\Columns\TextColumn::make('id')
+                    ->label('ID')
+                    ->getStateUsing(fn ($record) => pkl::orderBy('id')->pluck('id')
+                    ->search($record->id) + 1),
+                
+                // nama siswa
+                Tables\Columns\TextColumn::make('siswa.nama')
+                    ->label('Nama Siswa')
+                    ->searchable(),
+
+                // nama industri
+                Tables\Columns\TextColumn::make('industri.nama')
+                    ->label('Nama Industri')
+                    ->searchable(),
+
+                // nama guru
+                Tables\Columns\TextColumn::make('guru.nama')
+                    ->label('Nama Guru')
+                    ->searchable(),
+
+                // mulai
+                Tables\Columns\TextColumn::make('mulai')
+                    ->label('Mulai')
+                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('d M Y')),
+                            // formatStateUsing() = mengubah tampilan nilai sebelum ditampilkan.
+                            //Carbon::parse($state)->format('d M Y') -> memformat tanggal, misalnya jadi: 01 Jul 2025
+                
+                // selesai
+                Tables\Columns\TextColumn::make('selesai')
+                    ->label('Selesai')
+                    ->formatStateUsing(fn ($state) => \Carbon\Carbon::parse($state)->format('d M Y')), 
+            ])
+
+            ->filters([
+                //
+            ])
+            ->actions([
+                \Filament\Tables\Actions\ActionGroup::make([
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                ],)
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListPkls::route('/'),
+            'create' => Pages\CreatePkl::route('/create'),
+            'view' => Pages\ViewPkl::route('/{record}'),
+            'edit' => Pages\EditPkl::route('/{record}/edit'),
+        ];
+    }
+}
