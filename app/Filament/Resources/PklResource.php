@@ -35,10 +35,6 @@ class PklResource extends Resource
             ->relationship('siswa', 'nama') // menampilkan field nama dari tabel siswa
             ->native(false) // menonaktifkan tampilan dropdown bawaan browser
             ->columnSpan(2)
-            ->unique(table: 'pkls', column: 'siswa_id', ignoreRecord:true)
-            ->validationMessages([
-                'unique' => 'Siswa ini sudah memiliki data PKL.',
-            ])
             ->required(),
 
         // industri_id

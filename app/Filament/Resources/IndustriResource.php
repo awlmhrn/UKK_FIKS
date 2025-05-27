@@ -25,6 +25,8 @@ class IndustriResource extends Resource
             ->schema([
                 Forms\Components\Grid::make(2) //form dibagi jadi 2 kolom per baris
                 ->schema([
+
+
                     //gambar
                     Forms\Components\FileUpload::make('gambar')
                         ->label('Logo Industri')
@@ -72,6 +74,7 @@ class IndustriResource extends Resource
     {
         return $table
             ->columns([
+                // id
                 // id menjadi nomor urut berdasarkan id terkecil hingga terbesar
                 // ini sekedar di table filamentnya, pada database tetap sesuai dengan id yang tersimpan dan terhapus
                 Tables\Columns\TextColumn::make('id')
@@ -120,10 +123,47 @@ class IndustriResource extends Resource
                 
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteBulkAction::make()
+                    // collection $records: daftar semua baris (record) yang dipilih oleh user
+                    // Filament mengirim data yang DIPILIH dalam bentuk Collection, bukan array biasa
+                    ->action(function (\Illuminate\Support\Collection $records) {
+
+                        // kan ini bulkAction ya, aksi massal, ini tu yang checkbox itu, jadi bisa multiple select
+                        // makannya kita menggunakan Collection seperti di atas, kita bisa milih banyak
+                        // $records: sebuah koleksi data (biasanya array atau Collection), misalnya semua industri yang dipilih user di tabel
+                        // as $record: setiap item tunggal dari koleksi tersebut akan ditampung ke variabel $record
+                        foreach ($records as $record) {
+                            // memanggil method deleteIndustri() untuk tiap data industri yang dipilih
+                            static::deleteIndustri($record);
+                        }
+                    }),
             ]);
+    }
+
+    // fungsi inilah yang dijalankan ketika tombol hapus diklik
+    public static function deleteIndustri($record)
+    {
+        if ($record->pkls()->exists()) {
+            \Filament\Notifications\Notification::make()
+            // $record->pkls() = mengambil relasi pkls yang terkait dengan industri tersebut (berdasarkan hasMany di model Industri)
+            // ->exists() = Mengecek apakah ada data pkls yang masih menggunakan merk ini.
+            // jika ada, pkl yang menggunakan industri ini, penghapusan dibatalkan, dan muncul notifikasi error.
+                ->title('Gagal menghapus!')
+                ->body('Industri ini masih digunakan dalam PKL. Hapus PKL terkait terlebih dahulu.')
+                ->danger() // merah
+                ->send();
+            return;
+        }
+
+        // jika industri tidak digunakan dalam PKL, maka datanya akan dihapus
+        $record->delete();
+
+        \Filament\Notifications\Notification::make()
+            ->title('Industri dihapus!')
+            ->body('Industri berhasil dihapus.')
+            ->success() // hijau
+            ->send();
+
     }
 
     public static function getRelations(): array

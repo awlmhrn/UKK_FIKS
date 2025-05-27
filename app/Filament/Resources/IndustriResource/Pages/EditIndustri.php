@@ -3,8 +3,9 @@
 namespace App\Filament\Resources\IndustriResource\Pages;
 
 use App\Filament\Resources\IndustriResource;
-use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Pages\Actions\ViewAction;
+use Filament\Pages\Actions\DeleteAction;
 
 class EditIndustri extends EditRecord
 {
@@ -13,12 +14,18 @@ class EditIndustri extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make()
+                ->action(function () {
+                    $record = $this->record;
+
+                    // panggil fungsi pengecekan sebelum hapus
+                    IndustriResource::deleteIndustri($record);
+                }),
         ];
     }
 
-    protected function getRedirectUrl():string
+    protected function getRedirectUrl(): string
     {
         return $this->getResource()::getUrl('index');
     }
