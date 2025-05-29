@@ -1,6 +1,6 @@
-<!-- Be like water. -->
+<!-- Success is as dangerous as failure.  -->
 <div class="pt-16">
-    
+
     <div class="m-4">
         <div class="flex justify-end my-4 gap-4">
             <form class="">   
@@ -17,35 +17,69 @@
             </form>
 
             <!-- filter sort -->
-            <div data-collapse-toggle="filter_guru" class="text-[#F6F7EF] bg-[#FCD34D] hover:bg-yellow-500 flex items-center py-2 px-4 rounded-xl cursor-pointer gap-2">
+            <div data-collapse-toggle="filter_siswa" class="text-[#F6F7EF] bg-[#FCD34D] hover:bg-yellow-500 flex items-center py-2 px-4 rounded-xl cursor-pointer gap-2">
                 <i class="fas fa-filter"></i>
             </div>
         </div>
 
         <!-- filter dan sort -->
-        <div class="bg-white border border-[#FCD34D] rounded-xl p-4 flex flex-col gap-y-4 mb-4 hidden" id="filter_guru">
+        <div class="bg-white border border-[#FCD34D] rounded-xl p-4 flex flex-col gap-y-4 mb-4 hidden" id="filter_siswa">
             <!-- filter -->
+            <!-- gender -->
             <div class="flex justify-between">
-                <div class="text-gray-800">Gender</div>
+                <div class="text-black-700">Gender</div>
 
                  <div class="grid gap-4">
                     <div class="flex gap-4 mt-2">
-                        @foreach($genders as $value => $label)
+                        @foreach($genders as $value => $gender)
                             <label class="cursor-pointer relative">
                                 <input type="checkbox" wire:model.live="selected_gender" value="{{ $value }}" class="peer sr-only" />
 
-                                {{-- before (unchecked) --}}
+                                <!-- before -->
                                 <div class="overflow-hidden opacity-100 rounded-lg border border-[#FCD34D] peer-checked:opacity-0">
                                     <div class="flex items-center text-center justify-between p-2">
-                                        <span class="z-3 text-base text-black-700 pr-2">{{ $label }}</span>
+                                        <span class="z-3 text-base text-black-700 pr-2">{{ $gender }}</span>
                                         <i class="fa-solid fa-check text-black-500 opacity-0"></i>
                                     </div>
                                 </div>
 
-                                {{-- after (checked) --}}
+                                <!-- after -->
                                 <div class="absolute top-0 r-0 opacity-0 rounded-lg border border-[#FCD34D] peer-checked:opacity-100 peer-checked:bg-[#FCD34D] peer-checked:text-white">
                                     <div class="flex items-center justify-between p-2">
-                                        <span class="text-base pr-2">{{ $label }}</span>
+                                        <span class="text-base pr-2">{{ $gender }}</span>
+                                        <i class="fa-solid fa-check text-white-500"></i>
+                                    </div>
+                                </div>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <div class="border border-[#FCD34D]"></div>
+
+            <!-- rombel -->
+            <div class="flex justify-between">
+                <div class="text-black-700">Rombongan Belajar</div>
+
+                 <div class="grid gap-4">
+                    <div class="flex gap-4 mt-2">
+                        @foreach($rombels as $value => $rombel)
+                            <label class="cursor-pointer relative">
+                                <input type="checkbox" wire:model.live="selected_rombel" value="{{ $value }}" class="peer sr-only" />
+
+                                <!-- before -->
+                                <div class="overflow-hidden opacity-100 rounded-lg border border-[#FCD34D] peer-checked:opacity-0">
+                                    <div class="flex items-center text-center justify-between p-2">
+                                        <span class="z-3 text-base text-black-700 pr-2">{{ $rombel }}</span>
+                                        <i class="fa-solid fa-check text-black-500 opacity-0"></i>
+                                    </div>
+                                </div>
+
+                                <!-- after -->
+                                <div class="absolute top-0 r-0 opacity-0 rounded-lg border border-[#FCD34D] peer-checked:opacity-100 peer-checked:bg-[#FCD34D] peer-checked:text-white">
+                                    <div class="flex items-center justify-between p-2">
+                                        <span class="text-base pr-2">{{ $rombel }}</span>
                                         <i class="fa-solid fa-check text-white-500"></i>
                                     </div>
                                 </div>
@@ -58,8 +92,9 @@
             <div class="border border-[#FCD34D]"></div>
 
             <!-- sort -->
+            <!-- abjad -->
             <div class="flex justify-between">
-                <div class="text-gray-800">Abjad</div>
+                <div class="text-black-700">Abjad</div>
 
                 <div class="flex gap-4 mt-2">
                     {{-- a-z --}}
@@ -105,19 +140,25 @@
 
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="font-bold text-white bg-[#FCD34D]">
+                <thead class="text-xs text-white bg-[#FCD34D]">
                     <tr>
                         <th scope="col" class="px-6 py-3">
                             No
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            Gambar
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            NIP
+                            NIS
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Gender
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Rombel
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Alamat
@@ -131,33 +172,44 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($gurus as $key => $guru)
+                    @forelse ($siswas as $key => $siswa)
                         <tr class="bg-white border-b border-gray-200 hover:bg-yellow-100">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $guru->id }}
+                                {{ $siswa->id }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $guru->nama }} 
+                                <!-- [kondisi] ? [benar] : [salah] -->
+                                <img class="rounded-full w-12 h-12 object-contain" 
+                                src="{{ $siswa->foto && file_exists(storage_path('app/public/' . $siswa->foto)) 
+                                ? asset('storage/' . $siswa->foto) 
+                                : asset('images/siswa.png') }}" 
+                                alt="foto siswa" />
                             </td>
                             <td class="px-6 py-4">
-                                {{ $guru->nip }} 
+                                {{ $siswa->nama }} 
                             </td>
                             <td class="px-6 py-4">
-                                {{ $guru->gender }}
+                                {{ $siswa->nis }} 
                             </td>
                             <td class="px-6 py-4">
-                                {{ $guru->alamat }}
+                                {{ $siswa->gender }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $guru->kontak }}
+                                {{ $siswa->rombel }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $guru->email }}
+                                {{ $siswa->alamat }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $siswa->kontak }}
+                            </td>
+                            <td class="px-6 py-4">
+                                {{ $siswa->email }}
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-gray-500">Guru Tidak Terdaftar</td>
+                            <td colspan="9" class="text-center py-4 text-gray-500">Siswa Tidak Terdaftar</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -171,5 +223,4 @@
     <!-- js flowbite -->
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
 
->>>>>>> 0bd87ba (mumets)
 </div>

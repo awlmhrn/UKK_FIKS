@@ -30,6 +30,21 @@
                         {{ __('Data PKL') }}
                     </x-nav-link>
                 </div>
+
+                <!-- Siswa -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('siswa') }}" :active="request()->routeIs('siswa')">
+                        {{ __('Siswa') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Industri -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('industri') }}" :active="request()->routeIs('industri')">
+                        {{ __('Industri') }}
+                    </x-nav-link>
+                </div>  
+                
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">

@@ -35,11 +35,11 @@ Route::middleware([
     // Guru
     Route::get('/guru', App\Livewire\Guru\Index::class)->name('guru');
 
-    // // Siswa
-    // Route::get('/siswa', App\Livewire\Siswa\Index::class)->name('siswa');
+    // Siswa
+    Route::get('/siswa', App\Livewire\Siswa\Index::class)->name('siswa');
 
-    // // Industri
-    // Route::get('/industri', App\Livewire\Industri\Index::class)->name('industri');
-    // Route::get('/industri/tambah', App\Livewire\Industri\Create::class)->name('industriCreate');
-    // Route::get('/industri/{id}/edit', App\Livewire\Industri\Edit::class)->name('industriEdit');
+    // Industri
+    Route::get('/industri', App\Livewire\Industri\Index::class)->name('industri');
+    Route::get('/industri/tambah', App\Livewire\Industri\Create::class)->name('industriCreate');
+    Route::get('/industri/{id}/edit', App\Livewire\Industri\Edit::class)->name('industriEdit');
 });
