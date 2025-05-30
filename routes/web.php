@@ -1,27 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PklController;
 
+// Welcome Page
 Route::get('/', function () {
     return view('welcome');
 });
 
-// route custom 403 / menunggu
-Route::get('/menungguAksesAdmin', function () {
-    return view('menunggu'); // bisa isi sabar ye atau apapun
-})->name('menungguAdmin');
+// Halaman jika belum dapat akses (menunggu verifikasi role)
+Route::get('/menungguAksesAdmin', App\Livewire\MenungguAkses::class)
+    ->middleware('auth')
+    ->name('menungguAdmin');
 
+// Middleware: auth + verifikasi + role
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    // nah, CheckUserRoles ini merupakan nama alias yang sudah kita daftarkan di bootstrap/app.php tadi
-    // super_admin dan siswanya merupakan parameter (nilai)
-    'CheckUserRoles:super_admin',
-    'CheckUserRoles:siswa',
-
+    'CheckUserRoles:super_admin,siswa', // <- dinamis: bisa ditambah admin,guru,dll
 ])->group(function () {
+    
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');

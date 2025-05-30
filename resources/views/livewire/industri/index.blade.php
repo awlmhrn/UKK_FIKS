@@ -1,5 +1,5 @@
 <!-- Knowing others is intelligence; knowing yourself is true wisdom. -->
-<div class="pt-16">
+<div class="pt-4">
 
     <div class="m-4">
         <!-- search dan add industri-->

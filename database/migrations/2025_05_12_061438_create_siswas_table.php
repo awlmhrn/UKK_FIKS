@@ -19,7 +19,8 @@ return new class extends Migration
             $table->enum('rombel',['SIJA A','SIJA B']);
             $table->string('alamat');
             $table->string('kontak');
-            $table->string('email');
+            $table->string('email')->unique();
+            $table->string('foto')->nullable();
             $table->boolean('status_pkl')->default(false);
             $table->timestamps();
         });

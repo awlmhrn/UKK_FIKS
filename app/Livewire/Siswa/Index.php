@@ -3,10 +3,13 @@
 namespace App\Livewire\Siswa;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Siswa;
 
 class Index extends Component
 {
+    use WithPagination; // untuk pagination
+
     public $search = '';
     public $selected_gender = [];
     public $selected_rombel = [];
@@ -56,7 +59,7 @@ class Index extends Component
         }
 
         return view('livewire.siswa.index', [
-            'siswas' => $siswas->get(),
+            'siswas' => $siswas->paginate(5), // paginate(5) artinya tampilkan 5 data per halaman
             'genders' => $genders,
             'rombels' => $rombels,
         ]);

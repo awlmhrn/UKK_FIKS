@@ -56,7 +56,7 @@
             </thead>
             <tbody>
                 @forelse ($pkls as $key => $pkl)
-                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tr class="hover:bg-yellow-200 hover:text-yellow-700 hover:font-bold rounded cursor-pointer transition">
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {{ $key + 1 }}
                         </th>

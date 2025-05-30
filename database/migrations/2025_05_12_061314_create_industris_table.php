@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('industris', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('gambar');
+            $table->string('foto');
             $table->string('bidang_usaha');
             $table->string('alamat');
             $table->string('kontak');
-            $table->string('email');
+            $table->string('email')->unique();
+            $table->string('website');
             $table->timestamps();
         });
     }

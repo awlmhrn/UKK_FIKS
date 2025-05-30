@@ -9,7 +9,7 @@ class Siswa extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama','nis','gender','rombel','alamat','kontak','email','status_pkl'];
+    protected $fillable = ['nama','nis','gender','rombel','alamat','kontak','email','status_pkl', 'foto'];
 
     //relasi dengan pkl
     public function pkl()

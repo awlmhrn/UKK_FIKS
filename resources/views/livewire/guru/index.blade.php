@@ -1,5 +1,5 @@
 <!-- Be like water. -->
-<div class="pt-16">
+<div class="pt-4">
     
     <div class="m-4">
         <div class="flex justify-end my-4 gap-4">
@@ -132,7 +132,7 @@
                 </thead>
                 <tbody>
                     @forelse ($gurus as $key => $guru)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-yellow-100">
+                        <tr class="hover:bg-yellow-200 hover:text-yellow-700 hover:font-bold rounded cursor-pointer transition">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ $guru->id }}
                             </th>
@@ -162,14 +162,13 @@
                     @endforelse
                 </tbody>
             </table>
+                    </div>
+        <!-- pagination -->
+        <div class="mt-4 flex justify-center">
+            {{ $gurus->links() }}
+        </div>
+    </div>
         </div>
     </div>
 
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Xx..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- js flowbite -->
-    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
-
->>>>>>> 0bd87ba (mumets)
 </div>

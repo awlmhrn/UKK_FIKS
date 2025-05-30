@@ -21,52 +21,66 @@ class IndustriResource extends Resource
 
     public static function form(Form $form): Form
     {
-        return $form
+         return $form
             ->schema([
-                Forms\Components\Grid::make(2) //form dibagi jadi 2 kolom per baris
+                Forms\Components\Card::make()
                 ->schema([
 
+                    Forms\Components\Grid::make(2) // form dibagi jadi 2 kolom per baris
+                        ->schema([
+                            // foto
+                            Forms\Components\FileUpload::make('foto')
+                                ->label('Logo Industri')
+                                ->image() // Menjadikan file yang di-upload sebagai foto
+                                ->directory('industri') // Folder penyimpanan di storage/app/public/[industri]
+                                ->columnspan(2)
+                                ->required(), // Wajib
 
-                    //gambar
-                    Forms\Components\FileUpload::make('gambar')
-                        ->label('Logo Industri')
-                        ->image() //menjadikan file yang diupload sebagai gambar
-                        ->directory('industri') //folder penyimpanan di storage/app/public/[industri]
-                        ->columnspan(2)
-                        ->required(), //wajib
-                    
-                    //nama
-                    Forms\Components\TextInput::make('nama')
-                        ->label('Nama')                     //ada di atas form
-                        ->placeholder('Nama Industri')      //ada di dalam form
-                        ->required(),
+                            // nama
+                            Forms\Components\TextInput::make('nama')
+                                ->label('Nama')             // ada di atas form
+                                ->placeholder('Nama Indsutri')  // ada di dalam form
+                                ->columnspan(2)
+                                ->required(),
 
-                    //bidang usaha
-                    Forms\Components\TextInput::make('bidang_usaha')
-                        ->label('Bidang Usaha')                    
-                        ->placeholder('Bidang Usaha')      
-                        ->required(),
+                            // bidang usaha
+                            Forms\Components\TextInput::make('bidang_usaha')
+                                ->label('Bidang Usaha')           
+                                ->placeholder('Bidang Usaha') 
+                                ->required(),
+                                
+                            // website
+                            Forms\Components\TextInput::make('website')
+                                ->label('Website') 
+                                ->placeholder('Website Industri') 
+                                ->url() // validasi agar harus berupa URL
+                                ->required(),
 
-                    //email
-                    Forms\Components\TextInput::make('email')
-                        ->label('Email')
-                        ->placeholder('Email Industri')
-                        ->required(),
-                    
-                    //kontak
-                    Forms\Components\TextInput::make('kontak')
-                        ->label('Kontak')
-                        ->placeholder('Kontak Industri')
-                        ->required(),
-                    
-                    //alamat
-                    Forms\Components\TextInput::make('alamat')
-                        ->label('Alamat')
-                        ->placeholder('Alamat Industri')
-                        ->columnspan(2)
-                        ->required(),
-                ]),
+                            // email
+                            Forms\Components\TextInput::make('email')
+                                ->label('Email')           
+                                ->placeholder('Email Industri') 
+                                ->email()
+                                ->unique(ignoreRecord: true)
+                                ->validationMessages([ // ini pesan error yang akan tampil jika user memasukkan email yang sudah digunakan, agar lebih user friednly
+                                    'unique' => 'Email ini sudah dimiliki pengguna lain',
+                                ])
+                                ->required(),
 
+                            // kontak
+                            Forms\Components\TextInput::make('kontak')
+                                ->label('Kontak')           
+                                ->placeholder('Kontak Industri') 
+                                ->required(),
+
+                            // alamat
+                            Forms\Components\TextInput::make('alamat')
+                                ->label('Alamat') 
+                                ->placeholder('Alamat Industri') 
+                                ->columnspan(2)
+                                ->required(),
+                        ]),
+                ])
             ]);
     }
 
@@ -76,51 +90,54 @@ class IndustriResource extends Resource
             ->columns([
                 // id
                 // id menjadi nomor urut berdasarkan id terkecil hingga terbesar
-                // ini sekedar di table filamentnya, pada database tetap sesuai dengan id yang tersimpan dan terhapus
+                // ini sekadar di table filamentnya, pada database tetap sesuai dengan id yang tersimpan dan terhapus
                 Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->getstateUsing(fn ($record) => industri::orderBy('id')->pluck('id')
-                    ->search($record->id) + 1),
+                    ->label('ID') 
+                    ->getStateUsing(fn ($record) => industri::orderBy('id')->pluck('id') 
+                    ->search($record->id) + 1), 
 
-                //gambar
-                Tables\Columns\ImageColumn::make('gambar')
+                // gambar
+                Tables\Columns\ImageColumn::make('foto')
                     ->label('Logo'),
-                
-                //nama
+
+                // nama
                 Tables\Columns\TextColumn::make('nama')
                     ->label('Nama')
                     ->searchable()
                     ->sortable(),
 
-                //bidang usaha
+                // bidang usaha
                 Tables\Columns\TextColumn::make('bidang_usaha')
                     ->label('Bidang Usaha')
                     ->searchable()
                     ->sortable(),
 
-                //email
+                // website
+                Tables\Columns\TextColumn::make('website')
+                    ->label('Website')
+                    ->searchable()
+                    ->sortable(),
+                
+                // email
                 Tables\Columns\TextColumn::make('email')
                     ->label('Email')
                     ->searchable()
                     ->sortable(),
-
-                //kontak
+                
+                // kontak
                 Tables\Columns\TextColumn::make('kontak')
                     ->label('Kontak')
                     ->searchable()
                     ->sortable(),
-
             ])
             ->filters([
                 //
             ])
             ->actions([
-                \Filament\Tables\Actions\ActionGroup::make([
+               \Filament\Tables\Actions\ActionGroup::make([
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
-
                 ]),
-                
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make()
@@ -141,7 +158,7 @@ class IndustriResource extends Resource
     }
 
     // fungsi inilah yang dijalankan ketika tombol hapus diklik
-    public static function deleteIndustri($record)
+    protected static function deleteIndustri($record) 
     {
         if ($record->pkls()->exists()) {
             \Filament\Notifications\Notification::make()
@@ -155,7 +172,7 @@ class IndustriResource extends Resource
             return;
         }
 
-        // jika industri tidak digunakan dalam PKL, maka datanya akan dihapus
+        // jika industri tidak digunakan dalam PKL, maka datanya     akan dihapus
         $record->delete();
 
         \Filament\Notifications\Notification::make()
@@ -163,7 +180,6 @@ class IndustriResource extends Resource
             ->body('Industri berhasil dihapus.')
             ->success() // hijau
             ->send();
-
     }
 
     public static function getRelations(): array

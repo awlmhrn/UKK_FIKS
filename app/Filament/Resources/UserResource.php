@@ -48,9 +48,11 @@ class UserResource extends Resource
                         // sandi
                         Forms\Components\TextInput::make('password')
                             ->label('Sandi')
-                            ->placeholder('Sandi')
+                            ->placeholder('Biarkan kosong jika tidak ingin mengubah sandi')
                             ->password()
-                            ->required(),
+                            ->dehydrateStateUsing(fn($state) => filled($state) ? bcrypt($state) : null) // mengenkripsi sandi jika diisi, atau mengosongkannya jika tidak diisi
+                            ->dehydrated(fn($state) => filled($state)) // hanya mengirimkan state jika diisi
+                            ->required(fn($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord), // hanya wajib diisi saat membuat data baru, tidak saat mengedit
 
                         // roles
                         Forms\Components\Select::make('roles') // Relasi dengan roles dari spatie/permission

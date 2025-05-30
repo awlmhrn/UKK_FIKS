@@ -3,22 +3,28 @@
 namespace App\Livewire\Guru;
 
 use Livewire\Component;
+use Livewire\WithPagination;
 use App\Models\Guru;
 
 class Index extends Component
 {
+    use WithPagination;
+
     // apa public-public ini?
     // karena ini adalah Livewire component, dan agar property bisa di-bind ke form di Blade (dengan wire:model), properti harus public
     public $search = ''; // ini nama property, yang akan dipanggil di blade dengan wire:model.live
     public $selected_gender = [];
     public $selected_abjad = [];
 
+    protected $updatesQueryString = ['search', 'selected_gender', 'selected_abjad'];
+    protected $paginationTheme = 'tailwind';
+
     public function render()
     {
         // sekadar menerjemahkan enum field gender dengan variable genders
         $genders = [
             'Laki-Laki' => 'Laki-Laki',
-            'Perempuan' => 'Perempuan',
+            'Pperempuan' => 'Perempuan',
         ];
 
         // sebelumnya aku mengunaka Guru:all(), namun tidak bekerja untuk serach, mengapa?
@@ -51,7 +57,7 @@ class Index extends Component
         }
          
         return view('livewire.guru.index', [
-            'gurus' => $gurus->get(),
+            'gurus' => $gurus->paginate(5), // paginate(5) artinya tampilkan 5 data per halaman
             'genders' => $genders,
         ]);
     }

@@ -1,5 +1,5 @@
 <!-- Success is as dangerous as failure.  -->
-<div class="pt-16">
+<div class="pt-4">
 
     <div class="m-4">
         <div class="flex justify-end my-4 gap-4">
@@ -146,7 +146,7 @@
                             No
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Gambar
+                            foto
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Nama
@@ -173,17 +173,16 @@
                 </thead>
                 <tbody>
                     @forelse ($siswas as $key => $siswa)
-                        <tr class="bg-white border-b border-gray-200 hover:bg-yellow-100">
+                        <tr class="hover:bg-yellow-200 hover:text-yellow-700 hover:font-bold rounded cursor-pointer transition">
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $siswa->id }}
+                                {{ $loop->iteration }}
                             </th>
                             <td class="px-6 py-4">
-                                <!-- [kondisi] ? [benar] : [salah] -->
                                 <img class="rounded-full w-12 h-12 object-contain" 
-                                src="{{ $siswa->foto && file_exists(storage_path('app/public/' . $siswa->foto)) 
-                                ? asset('storage/' . $siswa->foto) 
-                                : asset('images/siswa.png') }}" 
-                                alt="foto siswa" />
+                                    src="{{ $siswa->foto && file_exists(public_path('storage/' . $siswa->foto)) 
+                                        ? asset('storage/' . $siswa->foto) 
+                                        : asset('images/siswa.png') }}" 
+                                    alt="foto Siswa" />
                             </td>
                             <td class="px-6 py-4">
                                 {{ $siswa->nama }} 
@@ -214,6 +213,10 @@
                     @endforelse
                 </tbody>
             </table>
+            <!-- pagination -->
+            <div class="mt-4 flex justify-center">
+                {{ $siswas->links() }}
+            </div>
         </div>
     </div>
 
