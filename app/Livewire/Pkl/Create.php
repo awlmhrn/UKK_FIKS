@@ -43,15 +43,31 @@ class Create extends Component
 
     // fungsi yang akan dipanggil ketika user menekan button Tambahkan, kan di button view ada wire:click="create", nah itu ini
     public function create() {
-        $this->validate([  // ini semua validasi input
-            // nah, nama validasi ini juga disesuaikan dari wire:model di blade
+        $this->validate([ // ini semua validasi input
+            // nama validasi ini juga disesuaikan dari wire:model di blade
             'siswa_id' => 'required|exists:siswas,id',
-                // 'siswa_id' => Nama field/input yang sedang divalidasi
-                // exists:gurus,id (format: exists:table,column)
+            // 'siswa_id' => Nama field/input yang sedang divalidasi
+            // exists:siswas,id (format: exists:table,column)
+
             'guru_id' => 'required|exists:gurus,id',
             'industri_id' => 'required|exists:industris,id',
             'mulai' => 'required|date',
-            'selesai' => 'required|date|after_or_equal:mulai', // tanggal selesai harus setelah atau sama dengan tanggal mulai
+            'selesai' => ['required', 'date', 'after_or_equal:mulai', // Tanggal selesai harus setelah atau sama dengan tanggal mulai
+                function ($attribute, $value, $fail) {
+                    $Mulai = \Carbon\Carbon::parse($this->mulai);
+                    // mengubah nilai tanggal mulai ($this->mulai) menjadi Carbon
+
+                    $Selesai = \Carbon\Carbon::parse($value);
+                    // mengubah nilai tanggal selesai ($value) menjadi Carbon
+
+                    if ($Mulai->diffInMonths($Selesai) < 3) { // $fail
+                        // menghitung jumlah bulan penuh antara mulai dan selesai
+                        // jika: durasi PKL kurang dari 3 bulan
+                        $fail('Durasi PKL minimal 3 bulan');
+                        // maka: panggil fungsi $fail dengan pesan ini
+                    }
+                },
+            ],
         ]);
         
         // mulai transaksi database - supaya semua query berikutnya dijalankan bersama, dan bisa di-rollback kalau terjadi error

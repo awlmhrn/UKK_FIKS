@@ -138,86 +138,60 @@
             </div>
         </div>
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-white bg-[#FCD34D]">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            No
+        <div> <!-- root tunggal Livewire -->
+
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-white bg-[#FCD34D]">
+                <tr>
+                    <th scope="col" class="px-6 py-3">No</th>
+                    <th scope="col" class="px-6 py-3">foto</th>
+                    <th scope="col" class="px-6 py-3">Nama</th>
+                    <th scope="col" class="px-6 py-3">NIS</th>
+                    <th scope="col" class="px-6 py-3">Gender</th>
+                    <th scope="col" class="px-6 py-3">Rombel</th>
+                    <th scope="col" class="px-6 py-3">Alamat</th>
+                    <th scope="col" class="px-6 py-3">Kontak</th>
+                    <th scope="col" class="px-6 py-3">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($siswas as $key => $siswa)
+                    <tr class="hover:bg-yellow-200 hover:text-yellow-700 hover:font-bold rounded cursor-pointer transition">
+                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
+                            {{ $loop->iteration }}
                         </th>
-                        <th scope="col" class="px-6 py-3">
-                            foto
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nama
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            NIS
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Gender
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Rombel
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Alamat
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Kontak
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Email
-                        </th>
+                        <td class="px-6 py-4">
+                            <img class="rounded-full w-12 h-12 object-cover" 
+                                src="{{ $siswa->foto && file_exists(public_path('storage/' . $siswa->foto)) 
+                                    ? asset('storage/' . $siswa->foto) 
+                                    : asset('images/siswa.png') }}" 
+                                alt="foto Siswa" />
+                        </td>
+                        <td class="px-6 py-4">{{ $siswa->nama }}</td>
+                        <td class="px-6 py-4">{{ $siswa->nis }}</td>
+                        <td class="px-6 py-4">{{ $siswa->gender }}</td>
+                        <td class="px-6 py-4">{{ $siswa->rombel }}</td>
+                        <td class="px-6 py-4">{{ $siswa->alamat }}</td>
+                        <td class="px-6 py-4">{{ $siswa->kontak }}</td>
+                        <td class="px-6 py-4">{{ $siswa->email }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($siswas as $key => $siswa)
-                        <tr class="hover:bg-yellow-200 hover:text-yellow-700 hover:font-bold rounded cursor-pointer transition">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $loop->iteration }}
-                            </th>
-                            <td class="px-6 py-4">
-                                <img class="rounded-full w-12 h-12 object-contain" 
-                                    src="{{ $siswa->foto && file_exists(public_path('storage/' . $siswa->foto)) 
-                                        ? asset('storage/' . $siswa->foto) 
-                                        : asset('images/siswa.png') }}" 
-                                    alt="foto Siswa" />
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->nama }} 
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->nis }} 
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->gender }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->rombel }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->alamat }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->kontak }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $siswa->email }}
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="9" class="text-center py-4 text-gray-500">Siswa Tidak Terdaftar</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-            <!-- pagination -->
-            <div class="mt-4 flex justify-center">
-                {{ $siswas->links() }}
-            </div>
-        </div>
+                @empty
+                    <tr>
+                        <td colspan="9" class="text-center py-4 text-gray-500">Siswa Tidak Terdaftar</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- pagination DI LUAR div tabel, tapi masih dalam satu root -->
+    <div class="mt-6 pt-4 flex justify-center">
+        {{ $siswas->links() }}
+    </div>
+
+</div>
+
     </div>
 
     <!-- font awesome -->

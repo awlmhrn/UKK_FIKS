@@ -46,12 +46,19 @@ class CreateNewUser implements CreatesNewUsers
             ]);
         }
 
-         // ini juga coding dari sananya
+        // ini juga coding dari sananya
         // yang berguna untuk membuat user baru
-        return User::create([
+
+        //return User::create([
+        $user = User::create([ // ini adalah data yang akan dimasukkan ke dalam tabel users
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        //tambahkan role 'siswa' ke user yang baru dibuat
+        $user->assignRole('siswa'); // ini akan menambahkan role 'siswa' ke user yang baru dibuat
+        // jika berhasil, maka akan mengembalikan user yang baru dibuat
+        return $user; // mengembalikan user yang baru dibuat
     }
 }

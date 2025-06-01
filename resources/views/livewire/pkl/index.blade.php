@@ -1,4 +1,3 @@
-<div>
 <div class="px-8">
 
     <!-- Notifikasi pesan sukses / error -->
@@ -23,7 +22,7 @@
 
     <!-- Form Search -->
     <form class="">
-        <label for=" default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
+        <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only">Search</label>
         <div class="relative overflow-x-auto max-w-screen-xl mx-auto">
             <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                 <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" >
@@ -86,6 +85,7 @@
                         </td>
                         <td class="px-6 py-4 cursor-pointer text-white font-medium">
                             <!-- membuat tautan ke rute pklView (di web.php) dengan id dari data $pkl -->
+                            <div class="flex space-x-2">
                             <a href="{{ route('pklView', ['id' => $pkl->id]) }}"
                             class="bg-[#10B981] hover:bg-[#059669] py-2 px-4 rounded-lg">View</a>
 
@@ -110,7 +110,7 @@
                                 <a href="{{ route('pklEdit', ['id' => $pkl->id]) }}"
                                 class="bg-[#FFBF24] hover:bg-[#F59E0B] py-2 px-4 rounded-lg">Edit</a>
                             @endif
-                            
+                            </div> 
                         </td>
                     </tr>
                 @empty
@@ -120,6 +120,10 @@
                 @endforelse
             </tbody>
         </table>
+    </div>
+    <!-- Pagination -->
+    <div class="mt-6 flex justify-center">
+        {{ $pkls->links('pagination::tailwind') }}
     </div>
 </div>
 </div>

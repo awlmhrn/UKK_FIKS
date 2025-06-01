@@ -7,9 +7,18 @@ use App\Models\Pkl;
 use App\Models\Siswa;
 use App\Models\Guru;
 use App\Models\Industri;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
+
+        // Untuk pagination, jika ingin mengubah jumlah data per halaman, bisa diubah di sini
+        protected $paginationTheme = 'tailwind';
+    
+        // Untuk pencarian, akan digunakan di Blade dengan wire:model="search"
+        // Jadi, ini adalah property yang akan di-bind ke input pencarian di Blade
+
     public $search = '';
     
         public function render()
@@ -33,7 +42,7 @@ class Index extends Component
             });
         }
 
-        $pkls = $pklsQuery->get();
+         $pkls = $pklsQuery->paginate(1);
 
         // Ambil semua data siswa, guru, industri untuk dropdown (tanpa filter pencarian)
         $siswas = Siswa::all();

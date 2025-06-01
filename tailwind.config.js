@@ -16,6 +16,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                cyprus: '#004643',
+                sanddune: '#F0EDE5',
+            },
         },
     },
 

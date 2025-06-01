@@ -4,9 +4,11 @@ namespace App\Livewire\Industri;
 
 use Livewire\Component;
 use App\Models\Industri;
+use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
+    use WithFileUploads; // Untuk mengupload file
     public $industriId;
     public $foto, $nama, $bidang_usaha, $website, $email, $kontak, $alamat;
 
@@ -30,7 +32,7 @@ class Edit extends Component
         $industri = Industri::findOrFail($this->industriId);
 
         $this->validate([ // ini semua validasi input
-            'foto' => 'nullable|string|max:255',
+            'foto' => 'nullable|image|max:255',
             'nama' => 'required|string|max:255',
             'bidang_usaha' => 'required|string|max:255',
             'website' => 'required|url|max:255',
@@ -40,8 +42,15 @@ class Edit extends Component
             'alamat' => 'required|string|max:500',
         ]);
 
+        // Handle upload jika user mengganti foto
+        if (is_object($this->foto)) {
+            $fotoPath = $this->foto->store('industri/foto', 'public');
+        } else {
+            $fotoPath = $this->foto; // pakai foto lama
+        }
+
         $industri->update([
-            'foto' => $this->foto,
+            'foto' => $fotoPath,
             'nama' => $this->nama,
             'bidang_usaha' => $this->bidang_usaha,
             'website' => $this->website,

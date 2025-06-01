@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-mark class="block h-9 w-auto" />
+                        <img src="{{ asset('images/stembayo.png') }}" alt="Logo SMKN 2 Depok" class="h-10 w-auto">
                     </a>
                 </div>
 

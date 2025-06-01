@@ -59,7 +59,16 @@ class PklResource extends Resource
         // selesai
         Forms\Components\DatePicker::make('selesai')
             ->label('Tanggal Selesai')
+            ->maxDate(now()->addYears(5)) // memastikan tanggal selesai tidak lebih dari 5 tahun ke depan
             ->after('mulai') // memastikan tanggal selesai tidak lebih awal dari mulai
+            ->minDate(fn ($get) => $get('mulai') ? Carbon\Carbon::parse($get('mulai'))->addMonths(3)->toDateString() : null)
+            // minDate = mengatur tanggal minimal yang boleh dipilih
+            // $get('mulai') = ambil nilai tanggal mulai dari input form
+            // jika mulai benar (sudah diisi)
+            //      addMonths(3) = tambahkan 3 bulan ke tanggal mulai
+            //      toDateString() = konversi tanggal ke format string tanggal YYYY-MM-DD
+            // jika mulai salah (belum diisi)
+            //      null = tidak ada batas minimal
             ->required(),
         ])
 

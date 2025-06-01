@@ -92,7 +92,7 @@
                             </div>
                         </div>
                         {{-- after --}}
-                        <div class="absolute top-0 r-0 opacity-0 rounded-lg border border-[#FCD34D] peer-checked:opacity-100 checked peer-checked:bg-[#FCD34D] peer-checked:text-white">
+                        <div class="absolute top-0 r-0 opacity-0 rounded-lg border border-[#FCD34D] peer-checked:opacity-100 checked peer-checked:bg-[#004643] peer-checked:text-white">
                             <div class="flex items-center justify-between p-2">
                                 <span class="text-base pr-2">Z-A</span>
                                 <i class="fa-solid fa-check text-white-500"></i>
@@ -164,7 +164,7 @@
             </table>
                     </div>
         <!-- pagination -->
-        <div class="mt-4 flex justify-center">
+        <div class="mt-6 pt-2 flex justify-center">
             {{ $gurus->links() }}
         </div>
     </div>
